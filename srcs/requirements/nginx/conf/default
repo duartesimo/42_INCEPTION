@@ -1,0 +1,20 @@
+server {
+    listen 443 ssl;
+
+    server_name nsimao-f.42.fr;
+
+    ssl_certificate /etc/nginx/certs/cert.pem;
+    ssl_certificate_key /etc/nginx/certs/key.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    index index.php;
+    root /var/www/html;
+
+    location ~ [^/]\.php(/|$) {
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
